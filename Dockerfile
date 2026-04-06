@@ -1,19 +1,19 @@
-FROM alpine:3.21
+FROM alpine:3.23
 
 RUN apk add --no-cache ca-certificates
 
 RUN set -eux; \
 # https://github.com/distribution/distribution/releases
-	version='3.0.0'; \
+	version='3.1.0'; \
 	apkArch="$(apk --print-arch)"; \
 	case "$apkArch" in \
-		x86_64)  arch='amd64';   sha256='61c9a2c0d5981a78482025b6b69728521fbc78506d68b223d4a2eb825de5ca3d' ;; \
-		aarch64) arch='arm64';   sha256='6c2ee1d135626fa42e0d6fb66a0e0f42e22439e5050087d04f4c5ff53655892e' ;; \
-		armhf)   arch='armv6';   sha256='e038bba14c573628407d9f5dfa6b6f9d782acda62abf52dbf24ab257bbeedfe7' ;; \
-		armv7)   arch='armv7';   sha256='147d617e604e2e7d11b055484493c6a20731f6ce252d2bc47c716d8c48258719' ;; \
-		ppc64le) arch='ppc64le'; sha256='5386e9811790616d5b3c4d5de2f449e6da99f03dd45f33ee3e3464e81a264e6e' ;; \
-		s390x)   arch='s390x';   sha256='c8645e6fcebde5a441e1050c673b3ffa38572f61c1d1b1605d2bf333d3760328' ;; \
-		riscv64) arch='riscv64'; sha256='99bfeef7c553bf7b9861435e6b55fa584ecca73704f4a71418e482cc2d9e013d' ;; \
+		x86_64)  arch='amd64';   sha256='c69f2b8778c5357a77f6b41730d94d5f0b2b7cf54534040a06af5f0a70a731b2' ;; \
+		aarch64) arch='arm64';   sha256='f5527b7ed356767afb8a616e7b9423ef161b470e3674893e395e2a4e656deb1c' ;; \
+		armhf)   arch='armv6';   sha256='2c9a44ea1c289bade76770de459c437dde0bea3b44a3e7555264a63707e71470' ;; \
+		armv7)   arch='armv7';   sha256='0217d5704cd0be893320e686ca6bb7341991d9ed23251ac1265301994a890b6f' ;; \
+		ppc64le) arch='ppc64le'; sha256='1dc0fc28f368dd2d3b485f1bc7f9e5a6cb2421cf8fa94aade30fc334a362ae47' ;; \
+		s390x)   arch='s390x';   sha256='cbe535d6d70e5d9b6c160a6c52445eb9c90af57e12e2b5d377d1263077ae741e' ;; \
+		riscv64) arch='riscv64'; sha256='77cd50cd517758a5de09391d4cbda47e64caf1b67ba07413fbfbfeffed6de444' ;; \
 		*) echo >&2 "error: unsupported architecture: $apkArch"; exit 1 ;; \
 	esac; \
 	wget -O registry.tar.gz "https://github.com/distribution/distribution/releases/download/v${version}/registry_${version}_linux_${arch}.tar.gz"; \
