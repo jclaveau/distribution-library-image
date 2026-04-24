@@ -4,21 +4,19 @@
 # credentials live in Railway variables rather than in a persistent volume.
 #
 # Expected env:
-#   REGISTRY_HTPASSWD           — one "user:password" per line (multi-line value)
-#   REGISTRY_AUTH_HTPASSWD_PATH — output path (default: /etc/docker/registry/htpasswd)
+#   HTPASSWD_USERS  — one "user:password" per line (multi-line value)
 #
-# The registry's own auth still has to be enabled via the usual registry env
-# vars, e.g.:
-#   REGISTRY_AUTH=htpasswd
-#   REGISTRY_AUTH_HTPASSWD_REALM=Registry
-#   REGISTRY_AUTH_HTPASSWD_PATH=/etc/docker/registry/htpasswd
+# Auth is wired declaratively in config-example.yml (auth.htpasswd.path), so
+# this script must produce a valid file at /etc/docker/registry/htpasswd or
+# the registry will refuse to start.
 
 set -e
 
-HTPASSWD_PATH="${REGISTRY_AUTH_HTPASSWD_PATH:-/etc/docker/registry/htpasswd}"
+HTPASSWD_PATH="/etc/docker/registry/htpasswd"
 
-if [ -z "$REGISTRY_HTPASSWD" ]; then
-  exit 0
+if [ -z "$HTPASSWD_USERS" ]; then
+  echo "generate-htpasswd: HTPASSWD_USERS is not set; refusing to start with auth enabled but no credentials" >&2
+  exit 1
 fi
 
 mkdir -p "$(dirname "$HTPASSWD_PATH")"
@@ -33,4 +31,4 @@ while IFS= read -r line; do
     exit 1
   fi
   htpasswd -Bb "$HTPASSWD_PATH" "$user" "$pass" >/dev/null
-done <<< "$REGISTRY_HTPASSWD"
+done <<< "$HTPASSWD_USERS"

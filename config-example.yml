@@ -4,6 +4,10 @@ log:
   fields:
     service: registry
     environment: development
+auth:
+  htpasswd:
+    realm: Registry
+    path: /etc/docker/registry/htpasswd
 storage:
     delete:
       enabled: true
