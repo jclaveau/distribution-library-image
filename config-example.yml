@@ -15,8 +15,9 @@ storage:
         blobdescriptor: inmemory
     filesystem:
         rootdirectory: /var/lib/registry
-    tag:
-      concurrencylimit: 5
+    # for v3
+    # tag:
+    #   concurrencylimit: 5
 http:
     addr: :5000
     debug:
