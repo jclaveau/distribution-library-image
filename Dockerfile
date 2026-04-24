@@ -26,7 +26,7 @@ COPY ./config-example.yml /etc/distribution/config.yml
 
 ENV OTEL_TRACES_EXPORTER=none
 
-VOLUME ["/var/lib/registry"]
+# VOLUME ["/var/lib/registry"] # Disabled to use railway volume instead
 EXPOSE 5000
 
 COPY --chmod=755 generate-htpasswd.sh /generate-htpasswd.sh
