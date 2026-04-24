@@ -1,6 +1,6 @@
 FROM alpine:3.23
 
-RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache ca-certificates bash apache2-utils
 
 RUN set -eux; \
 # https://github.com/distribution/distribution/releases
@@ -29,7 +29,8 @@ ENV OTEL_TRACES_EXPORTER=none
 VOLUME ["/var/lib/registry"]
 EXPOSE 5000
 
-COPY entrypoint.sh /entrypoint.sh
+COPY --chmod=755 generate-htpasswd.sh /generate-htpasswd.sh
+COPY --chmod=755 entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["/etc/distribution/config.yml"]
